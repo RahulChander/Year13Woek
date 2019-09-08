@@ -1,0 +1,151 @@
+# Number 1
+import turtle, time
+turt = turtle.Turtle()
+turt.speed(20)
+def koch(t, order, size,n):
+    if order == 0:
+        t.forward(size)
+    else:
+        for angle in [60, -120, 60, 0]:
+           koch(t, order-1, size/3,6)
+           t.left(angle)
+    return n - 1
+def koch2(t,order,size):
+    i = 6
+    while i > 0:
+        i = koch(t,order,size,i)
+        t.right(60)
+#koch2(turt,2,100)
+
+# Number 2
+def square(t, order, size,i):
+    if order == 0:
+        t.forward(size)
+    else:
+        for angle in [-80, 160, -80, 0]:
+           square(t, order-1, size/2,i)
+           t.left(angle)
+    return i-1
+def square2(t,order,size):
+    i = 4
+    while i > 0:
+        i = square(t,order,size,i)
+        t.right(90)
+#square2(turt,2,100)
+
+# Number 3
+def triangle(t,order,size):
+    t.setheading(60)
+    if order == 0:
+        for i in range(3):
+            t.fd(size)
+            t.right(120)
+    else:
+        triangle(t,order-1,size/2)
+        t.fd(size/2)
+        triangle(t,order-1,size/2)
+        t.bk(size/2)
+        t.right(60)
+        t.fd(size/2)
+        t.left(60)
+        triangle(t,order-1,size/2)
+        t.right(60)
+        t.bk(size/2)
+        t.left(60)
+#triangle(turt,5,300)
+
+# Number 4
+def draw3(t,order,size):
+    t.pencolor('blue')
+    triangle(t,order-1,size/2)
+    t.forward(size/2)
+    t.pencolor('red')
+    triangle(t,order-1,size/2)
+    t.color('blue')
+    t.backward(size/2)
+    t.right(60)
+    t.forward(size/2)
+    t.left(60)
+    t.color('black')
+    triangle(t,order-1,size/2)
+def triangle2(t,order,size,colordepth=-1):
+    if colordepth == -1:
+        triangle(t,order,size)
+    elif colordepth == 0:
+        draw3(t,order,size)
+#triangle2(turt,3,100,0)
+
+# Number 5, 6, 7
+def flatten(List):
+    BigList = []
+    for i in List:
+        if type(i) != type([]):
+            BigList.append(i)
+        else:
+            BigList += flatten(i)
+    return BigList
+def recursive_min(List):
+    min = 9999999
+    broken = flatten(List)
+    for i in broken:
+        if i < min:
+            min = i
+    return min
+def target(num,List):
+    broken = flatten(List)
+    count = 0
+    for i in broken:
+        if i == num:
+            count += 1
+    return count
+#print(flatten([[[-13, 7], 90], 6, [1, 100], 8, 6]))
+#print(recursive_min([[[-13, 7], 90], 6, [1, 100], 8, 6]))
+#print(target(6,[[[-13, 7], 90], 6, [1, 100], 8, 6]))
+
+# Number 8
+def fib(n):
+    List = [1,1]
+    while len(List) < n:
+        List.append(List[-1] + List[-2])
+    return(List[n-1])
+#print(fib(100))
+
+# Number 9
+# Cool I learnt it
+
+# Number 10
+import os
+def get_dirlist(path):
+    dirlist = os.listdir(path)
+    dirlist.sort()
+    return dirlist
+def print_files(path, prefix = ""):
+    if prefix == "":
+        print("Folder listing for", path)
+        prefix = "| "
+    dirlist = get_dirlist(path)
+    for f in dirlist:
+        print(prefix+f)
+        fullname = os.path.join(path, f)
+        if os.path.isdir(fullname):
+            print_files(fullname, path + ' ')
+#print(print_files('/Users/rahulchander/Desktop/'))
+
+# Number 11
+def create_files(path, prefix = ""):
+    """ Print recursive listing of contents of path """
+    if prefix == "":  # Detect outermost call, print a heading
+        print("Folder listing for", path)
+        prefix = "| "
+
+    dirlist = get_dirlist(path)
+    print(dirlist)
+    for f in dirlist:
+        try:
+            value = path + f[1::]+'/trash.txt'
+            print(value)
+            file = open(value,'r')
+            file.close()
+        except:
+            print('Error')
+print(create_files('/Users/rahulchander/Desktop/'))
